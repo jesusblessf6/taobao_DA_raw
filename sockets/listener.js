@@ -6,8 +6,8 @@ socket listeners
 
 module.exports = function(io){
 
-	var globalCrawlerHandler = require('./globalCrawlerHandler');
-	var crawlerInfoHandler = require('./crawlerInfoHandler');
+	//var globalCrawlerHandler = require('./globalCrawlerHandler');
+	//var crawlerInfoHandler = require('./crawlerInfoHandler');
 
 	io.sockets.on('connection', function (socket) {
 
