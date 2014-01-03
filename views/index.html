@@ -1,18 +1,49 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <script src="/socket.io/socket.io.js"></script>
-    <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.min.css">
-    <script type="text/javascript" src="/javascripts/jquery-2.0.3.min.js"></script>
-    <script type="text/javascript" src="/javascripts/bootstrap.min.js"></script>
-    <script type="text/javascript" src="/javascripts/jquery.formatDateTime.min.js"></script>
-    <script type="text/javascript">
-    	var socket = io.connect('http://localhost:3000/');
-    </script>
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+
+<head>
+	<title><%= title %></title>
+	<script src="/socket.io/socket.io.js"></script>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.min.css">
+	<script type="text/javascript" src="/javascripts/jquery-2.0.3.min.js"></script>
+	<script type="text/javascript" src="/javascripts/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/javascripts/jquery.formatDateTime.min.js"></script>
+	<script type="text/javascript">
+		var socket = io.connect('http://localhost:3000/');
+	</script>
+</head>
+
+<body>
+	<div class="container">
+	    <div class="page-header">
+	    	<h3><%= title%></h3>
+	    </div>
+	    <div class="col-md-3">
+	    	<div class="panel panel-info">
+	    		<div class="panel-heading">爬虫</div>
+	    		<table class="table table-hover table-striped">
+    				<tr>
+    					<td>品牌</td>
+    				</tr>
+    				<tr>
+    					<td>品种</td>
+    				</tr>
+    				<tr>
+    					<td>SKU</td>
+    				</tr>
+    				<tr>
+    					<td>商品</td>
+    				</tr>
+    				<tr>
+    					<td>交易</td>
+    				</tr>
+    				<tr>
+    					<td>店铺</td>
+    				</tr>
+    			</table>
+	    	</div>
+	    </div>
+	</div>
+</body>
+
 </html>

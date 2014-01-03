@@ -11,8 +11,8 @@ module.exports = function(io){
 
 	io.sockets.on('connection', function (socket) {
 
-		// //connected
-		// socket.emit('connected', {status: 'ok'});
+		//connected
+		socket.emit('connected', {status: 'ok'});
 
 		// //start the global crawler
 		// socket.on('start global crawler', function(data){
