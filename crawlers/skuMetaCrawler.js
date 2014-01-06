@@ -108,6 +108,19 @@ exports.start = function(tid, brandTid, outercallback){
 		},
 
 		function(callback){
+			ItemMeta.updateUpdatedTime({
+				tid : tid,
+				target : 'skuMeta',
+				value : new Date()
+			}, function(err, result){
+				if(err){
+					console.log(err);
+				}
+				callback();
+			})
+		},
+
+		function(callback){
 			driver.close();
 			driver.quit();
 			driver = null;

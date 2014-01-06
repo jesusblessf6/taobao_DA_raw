@@ -3,6 +3,8 @@ var conn = require('./db').conn;
 function Brand(brand){
 	this.name = brand.name;
 	this.tid = brand.tid;
+	this.itemMetaUpdated = brand.itemMetaUpdated;
+	this.brandDetailUpdated = brand.brandDetailUpdated;
 };
 
 module.exports = Brand;

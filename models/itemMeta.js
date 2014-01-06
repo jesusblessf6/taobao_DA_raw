@@ -12,6 +12,8 @@ function ItemMeta(itemMeta){
 	this.cate1Id = itemMeta.cate1Id;
 	this.cate2Id = itemMeta.cate2Id;
 	this.cate3Id = itemMeta.cate3Id;
+	this.skuMetaUpdated = itemMeta.skuMetaUpdated;
+	this.itemMetaDetailUpdated = itemMeta.itemMetaDetailUpdated;
 };
 
 module.exports = ItemMeta;
@@ -29,7 +31,9 @@ ItemMeta.prototype.save = function(callback){
 		cate3 : this.cate3,
 		cate1Id : this.cate1Id,
 		cate2Id : this.cate2Id,
-		cate3Id : this.cate3Id
+		cate3Id : this.cate3Id,
+		skuMetaUpdated : new Date(),
+		itemMetaDetailUpdated : new Date()
 	};
 
 	var itemMetaCol = conn.collection('itemMetas');
@@ -120,4 +124,36 @@ ItemMeta.getCountByBrand = function(brandTid, callback){
 
 		callback(null, count);
 	});
+};
+
+ItemMeta.getAllDescByItemUpdatedTime = function(callback){
+	conn.collection('itemMetas').find().sort({skuMetaUpdated : 1}).toArray(function(err, results){
+		if(err){
+			return callback(err);
+		}else if(results){
+			console.log(results.length);
+			callback(null, results);
+		}
+	});
+};
+
+ItemMeta.updateUpdatedTime = function(obj, callback){
+	if(obj.target == "skuMeta"){
+		conn.collection('itemMetas').update({tid : obj.tid}, {$set : {skuMetaUpdated : obj.value}}, function(err, result){
+			if(err){
+				return callback(err);
+			}
+
+			callback(null, result);
+		});
+	}
+	else if(obj.target == "itemMetaDetail"){
+		conn.collection('itemMetas').update({tid : obj.tid}, {$set : {itemMetaDetailUpdated : obj.value}}, function(err, result){
+			if(err){
+				return callback(err);
+			}
+
+			callback(null, result);
+		});
+	}
 };

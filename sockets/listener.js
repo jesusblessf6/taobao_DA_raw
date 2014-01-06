@@ -8,7 +8,10 @@ module.exports = function(io){
 
 	var brandCrawler = require('../crawlers/brandCrawler');
 	var itemMetaCrawler = require('../crawlers/itemMetaCrawler');
+	var skuMetaCrawler = require('../crawlers/skuMetaCrawler');
+
 	var Brand = require('../models/brand');
+	var ItemMeta = require('../models/itemMeta');
 
 	var async = require('async');
 	var mom = require('moment');
@@ -55,7 +58,21 @@ module.exports = function(io){
 						break;
 
 						case 'SKU':
-							
+							ItemMeta.getAllDescByItemUpdatedTime(function(err, results){
+								if(err){
+									console.log(err);
+									callback();
+								}else if(results){
+									async.eachSeries(results, function(result, callback){
+										skuMetaCrawler.start(result.tid, result.brandTid, callback);
+									}, function(err){
+										if(err){
+											console.log(err);
+										}
+										callback();
+									});
+								}
+							});
 						break;
 					}
 					
