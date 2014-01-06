@@ -7,9 +7,36 @@
 	<link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.min.css">
 	<script type="text/javascript" src="/javascripts/jquery-2.0.3.min.js"></script>
 	<script type="text/javascript" src="/javascripts/bootstrap.min.js"></script>
-	<script type="text/javascript" src="/javascripts/jquery.formatDateTime.min.js"></script>
 	<script type="text/javascript">
 		var socket = io.connect('http://localhost:3000/');
+
+		socket.on('log', function(data){
+			addLog(data.content, data.type, data.target, data.time);
+		});
+
+		function runBrandCrawler(){
+			socket.emit('start crawler', {type: 'brand'});
+		}
+
+		function runProductCrawler(){
+			socket.emit('start crawler', {type: 'product'});
+		}
+
+		function runSKUCrawler(){
+			socket.emit('start crawler', {type: 'SKU'});
+		}
+
+		function addLog(l, type, target, time){
+			var classStr = "success";
+			if(type == "err"){
+				classStr = "warning";
+			}
+			else if(type == "default"){
+				classStr = "success"
+			}
+
+			$('#logs').prepend('<tr class="'+classStr+'"><td>'+time+'</td><td>'+target+'</td><td>'+l+'</td></tr>');
+		}
 	</script>
 </head>
 
@@ -18,29 +45,58 @@
 	    <div class="page-header">
 	    	<h3><%= title%></h3>
 	    </div>
-	    <div class="col-md-3">
+	    <div class="col-md-2">
 	    	<div class="panel panel-info">
-	    		<div class="panel-heading">爬虫</div>
+	    		<div class="panel-heading text-center">爬虫</div>
 	    		<table class="table table-hover table-striped">
     				<tr>
     					<td>品牌</td>
+    					<td class="text-right" style="padding-right:15px"><a href="javascript:runBrandCrawler()">运行</a></td>
     				</tr>
     				<tr>
     					<td>品种</td>
+    					<td class="text-right" style="padding-right:15px"><a href="javascript:runProductCrawler()">运行</a></td>
     				</tr>
     				<tr>
     					<td>SKU</td>
+    					<td class="text-right" style="padding-right:15px"><a href="javascript:runSKUCrawler()">运行</a></td>
     				</tr>
     				<tr>
     					<td>商品</td>
+    					<td class="text-right" style="padding-right:15px"><a href="">运行</a></td>
     				</tr>
     				<tr>
     					<td>交易</td>
+    					<td class="text-right" style="padding-right:15px"><a href="">运行</a></td>
     				</tr>
     				<tr>
     					<td>店铺</td>
+    					<td class="text-right" style="padding-right:15px"><a href="">运行</a></td>
+    				</tr>
+    				<tr>
+    					<td>岑氏</td>
+    					<td class="text-right" style="padding-right:15px"><span class="badge">14</span></td>
     				</tr>
     			</table>
+	    	</div>
+	    </div>
+	    <div class="col-md-2">
+	    	<div class="panel panel-success">
+	    		<div class="panel-heading text-center">运行中的爬虫</div>
+	    		<ul class="list-group" id="runningCrawlerList">
+	    			<!-- <li class="list-group-item">
+	    				<span class="badge">14</span>
+	    				品牌爬虫
+	    			</li> -->
+	    		</ul>
+	    	</div>
+	    </div>
+	    <div class="col-md-8">
+	    	<div class="panel panel-default" style="overflow:auto; height:450px">
+	    		<div class="panel-heading text-center">日志</div>
+	    		<table class="table table-hover table-striped table-condensed" id="logs">
+
+	    		</table>
 	    	</div>
 	    </div>
 	</div>
