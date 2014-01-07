@@ -58,21 +58,26 @@ module.exports = function(io){
 						break;
 
 						case 'skuMeta':
-							ItemMeta.getTop100DescBySkuMetaUpdatedTime(function(err, results){
-								if(err){
-									console.log(err);
-									callback();
-								}else if(results){
-									async.eachSeries(results, function(result, callback){
-										skuMetaCrawler.start(result.tid, result.brandTid, callback);
-									}, function(err){
+							ItemMeta.getAllCount(function(err, c){
+								async.timesSeries(c/100+1, function(i, callback){
+									ItemMeta.getTop100DescBySkuMetaUpdatedTime(function(err, results){
 										if(err){
 											console.log(err);
+											callback();
+										}else if(results){
+											async.eachSeries(results, function(result, callback){
+												skuMetaCrawler.start(result.tid, result.brandTid, callback);
+											}, function(err){
+												if(err){
+													console.log(err);
+												}
+												callback();
+											});
 										}
-										callback();
 									});
-								}
+								}, callback);
 							});
+							
 						break;
 
 						case 'sku':
@@ -84,7 +89,7 @@ module.exports = function(io){
 						break;
 
 						case 'shop':
-							
+
 						break;
 					}
 					

@@ -17,47 +17,54 @@ exports.start = function(tid, brandTid, outercallback){
 
 		//update the category info of the Item Meta
 		function(callback){
-			driver.findElement({id : 'spuDetailList'}).then(function(catDiv){
-				catDiv.findElements({tagName : 'a'}).then(function(cats){
-					async.each(cats, function(cat, callback){
-						var catIndex = 0;
-						cat.getAttribute('href').then(function(link){
-							var parts = link.split("&");
-							for(var x in parts){
-								var kvpair = parts[x].split("=");
-								if(kvpair[0] == "cat" && !kvpair[1].contains(",")){
-									if(kvpair[1] == "1801" || kvpair[1] == "50010788" || kvpair[1] == "50071436"){
-										tmpItemMeta.cate1Id = Number(kvpair[1]);
-										catIndex = 1;
-									}else{
-										tmpItemMeta.cate2Id = Number(kvpair[1]);
-										catIndex = 2;
+			driver.isElementPresent({id : 'spuDetailList'}).then(function(existed){
+				if(existed){
+					driver.findElement({id : 'spuDetailList'}).then(function(catDiv){
+						catDiv.findElements({tagName : 'a'}).then(function(cats){
+							async.each(cats, function(cat, callback){
+								var catIndex = 0;
+								cat.getAttribute('href').then(function(link){
+									var parts = link.split("&");
+									for(var x in parts){
+										var kvpair = parts[x].split("=");
+										if(kvpair[0] == "cat" && !kvpair[1].contains(",")){
+											if(kvpair[1] == "1801" || kvpair[1] == "50010788" || kvpair[1] == "50071436"){
+												tmpItemMeta.cate1Id = Number(kvpair[1]);
+												catIndex = 1;
+											}else{
+												tmpItemMeta.cate2Id = Number(kvpair[1]);
+												catIndex = 2;
+											}
+										}
 									}
-								}
-							}
-						}).then(function(){
-							cat.getInnerHtml().then(function(t){
-								if(catIndex == 1){
-									tmpItemMeta.cate1 = t;
-								}
-								else if(catIndex == 2){
-									tmpItemMeta.cate2 = t;
+								}).then(function(){
+									cat.getInnerHtml().then(function(t){
+										if(catIndex == 1){
+											tmpItemMeta.cate1 = t;
+										}
+										else if(catIndex == 2){
+											tmpItemMeta.cate2 = t;
+										}
+									});
+								}).then(callback);
+							}, function(err){
+								if(err){
+									console.log(err);
 								}
 							});
-						}).then(callback);
-					}, function(err){
-						if(err){
-							console.log(err);
-						}
+						});
+					}).then(function(){
+						ItemMeta.saveCateInfo(tid, tmpItemMeta.cate1, tmpItemMeta.cate2, null, tmpItemMeta.cate1Id, tmpItemMeta.cate2Id, null, function(err, result){
+							if(err){
+								console.log(err);
+							}
+						});
 					});
-				});
-			}).then(function(){
-				ItemMeta.saveCateInfo(tid, tmpItemMeta.cate1, tmpItemMeta.cate2, null, tmpItemMeta.cate1Id, tmpItemMeta.cate2Id, null, function(err, result){
-					if(err){
-						console.log(err);
-					}
-				});
-			}).then(callback);
+				}else{
+					outercallback();
+				}
+			})
+			.then(callback);
 		},
 
 		function(callback){
