@@ -6,9 +6,9 @@ socket listeners
 
 module.exports = function(io){
 
-	var brandCrawler = require('../crawlers/brandCrawler');
-	var itemMetaCrawler = require('../crawlers/itemMetaCrawler');
-	var skuMetaCrawler = require('../crawlers/skuMetaCrawler');
+	var brandCrawler = require('../crawlers/basic/brandCrawler');
+	var itemMetaCrawler = require('../crawlers/basic/itemMetaCrawler');
+	var skuMetaCrawler = require('../crawlers/basic/skuMetaCrawler');
 
 	var Brand = require('../models/brand');
 	var ItemMeta = require('../models/itemMeta');
@@ -58,7 +58,7 @@ module.exports = function(io){
 						break;
 
 						case 'SKU':
-							ItemMeta.getAllDescBySkuMetaUpdatedTime(function(err, results){
+							ItemMeta.getTop100DescBySkuMetaUpdatedTime(function(err, results){
 								if(err){
 									console.log(err);
 									callback();
