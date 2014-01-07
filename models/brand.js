@@ -65,7 +65,7 @@ Brand.getAll = function(callback){
 };
 
 Brand.getAllDescByItemUpdatedTime = function(callback){
-	conn.collection('brands').find().sort({itemMetaUpdated : 1}).toArray(function(err, results){
+	conn.collection('brands').find({$query : {}, $sort : {skuMetaUpdated : 1}}).toArray(function(err, results){
 		if(err){
 			return callback(err);
 		}else if(results){

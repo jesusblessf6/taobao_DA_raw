@@ -58,7 +58,7 @@ module.exports = function(io){
 						break;
 
 						case 'SKU':
-							ItemMeta.getAllDescByItemUpdatedTime(function(err, results){
+							ItemMeta.getAllDescBySkuMetaUpdatedTime(function(err, results){
 								if(err){
 									console.log(err);
 									callback();

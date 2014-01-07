@@ -126,8 +126,8 @@ ItemMeta.getCountByBrand = function(brandTid, callback){
 	});
 };
 
-ItemMeta.getAllDescByItemUpdatedTime = function(callback){
-	conn.collection('itemMetas').find().sort({skuMetaUpdated : 1}).toArray(function(err, results){
+ItemMeta.getAllDescBySkuMetaUpdatedTime = function(callback){
+	conn.collection('itemMetas').find({$query: {}, $sort: {skuMetaUpdated : 1}}).toArray(function(err, results){
 		if(err){
 			return callback(err);
 		}else if(results){
