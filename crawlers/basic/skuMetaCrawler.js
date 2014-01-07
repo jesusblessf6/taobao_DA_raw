@@ -61,6 +61,9 @@ exports.start = function(tid, brandTid, outercallback){
 						});
 					});
 				}else{
+					driver.close();
+					driver.quit();
+					driver = null;
 					outercallback();
 				}
 			})
