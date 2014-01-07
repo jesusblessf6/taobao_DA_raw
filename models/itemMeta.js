@@ -127,7 +127,7 @@ ItemMeta.getCountByBrand = function(brandTid, callback){
 };
 
 ItemMeta.getAllDescBySkuMetaUpdatedTime = function(callback){
-	conn.collection('itemMetas').find({$query: {}, $sort: {skuMetaUpdated : 1}}).toArray(function(err, results){
+	conn.collection('itemMetas').find({$query : {}, $orderby : {skuMetaUpdated : 1} }).toArray(function(err, results){
 		if(err){
 			return callback(err);
 		}else if(results){

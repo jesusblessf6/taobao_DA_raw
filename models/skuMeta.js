@@ -6,8 +6,8 @@ function SkuMeta(skuMeta){
 	this.brandTid = skuMeta.brandTid;
 	this.title = skuMeta.title;
 	this.refPrice = skuMeta.refPrice;
-	this.skuUpdatedTime = skuMeta.skuUpdatedTime;
-	this.skuMetaDetailUpdatedTime = skuMeta.skuMetaDetailUpdatedTime;
+	this.skuUpdated = skuMeta.skuUpdated;
+	this.skuMetaDetailUpdated = skuMeta.skuMetaDetailUpdated;
 };
 
 module.exports = SkuMeta;
@@ -22,8 +22,8 @@ SkuMeta.prototype.save = function(callback){
 		brandTid : this.brandTid,
 		title : this.title,
 		refPrice : this.refPrice,
-		skuUpdatedTime : new Date(),
-		skuMetaDetailUpdatedTime : new Date()
+		skuUpdated : new Date(),
+		skuMetaDetailUpdated : new Date()
 	};
 
 	skuMetaCol.count({tid : sm.tid, itemMetaTid : sm.itemMetaTid}, function(err, c){
