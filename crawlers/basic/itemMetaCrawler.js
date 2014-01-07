@@ -1,10 +1,10 @@
 exports.start = function(brand, outercallback){
 	
-	var settings = require('./crawler_settings');
+	var settings = require('../crawler_settings');
 	var webdriver = require('selenium-webdriver');
 	var async = require('async');
-	var Brand = require('../models/brand');
-	var ItemMeta = require('../models/itemMeta');
+	var Brand = require('../../models/brand');
+	var ItemMeta = require('../../models/itemMeta');
 	var driver = new webdriver.Builder().
 			   	withCapabilities(webdriver.Capabilities.chrome()).
 			   	build();

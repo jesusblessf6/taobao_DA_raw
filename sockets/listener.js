@@ -38,7 +38,7 @@ module.exports = function(io){
 							brandCrawler.start(callback);
 						break;
 
-						case 'product':
+						case 'itemMeta':
 							Brand.getAllDescByItemUpdatedTime(function(err, results){
 								if(err){
 									console.log(err);
@@ -57,7 +57,7 @@ module.exports = function(io){
 							});
 						break;
 
-						case 'SKU':
+						case 'skuMeta':
 							ItemMeta.getTop100DescBySkuMetaUpdatedTime(function(err, results){
 								if(err){
 									console.log(err);
@@ -73,6 +73,18 @@ module.exports = function(io){
 									});
 								}
 							});
+						break;
+
+						case 'sku':
+
+						break;
+
+						case 'trade':
+
+						break;
+
+						case 'shop':
+							
 						break;
 					}
 					

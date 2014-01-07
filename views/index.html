@@ -18,12 +18,24 @@
 			socket.emit('start crawler', {type: 'brand'});
 		}
 
-		function runProductCrawler(){
-			socket.emit('start crawler', {type: 'product'});
+		function runItemMetaCrawler(){
+			socket.emit('start crawler', {type: 'itemMeta'});
 		}
 
-		function runSKUCrawler(){
-			socket.emit('start crawler', {type: 'SKU'});
+		function runSkuMetaCrawler(){
+			socket.emit('start crawler', {type: 'skuMeta'});
+		}
+
+		function runSkuCrawler(){
+			socket.emit('start crawler', {type : 'sku'});
+		}
+
+		function runTradeCrawler(){
+			socket.emit('start crawler', {type : 'trade'});
+		}
+
+		function runShopCrawler(){
+			socket.emit('start crawler', {type : 'shop'});
 		}
 
 		function addLog(l, type, target, time){
@@ -55,23 +67,23 @@
     				</tr>
     				<tr>
     					<td>品种</td>
-    					<td class="text-right" style="padding-right:15px"><a href="javascript:runProductCrawler()">运行</a></td>
+    					<td class="text-right" style="padding-right:15px"><a href="javascript:runItemMetaCrawler()">运行</a></td>
     				</tr>
     				<tr>
     					<td>SKU</td>
-    					<td class="text-right" style="padding-right:15px"><a href="javascript:runSKUCrawler()">运行</a></td>
+    					<td class="text-right" style="padding-right:15px"><a href="javascript:runSkuMetaCrawler()">运行</a></td>
     				</tr>
     				<tr>
     					<td>商品</td>
-    					<td class="text-right" style="padding-right:15px"><a href="">运行</a></td>
+    					<td class="text-right" style="padding-right:15px"><a href="javascript:runSkuCrawler()">运行</a></td>
     				</tr>
     				<tr>
     					<td>交易</td>
-    					<td class="text-right" style="padding-right:15px"><a href="">运行</a></td>
+    					<td class="text-right" style="padding-right:15px"><a href="javascript:runTradeCrawler()">运行</a></td>
     				</tr>
     				<tr>
     					<td>店铺</td>
-    					<td class="text-right" style="padding-right:15px"><a href="">运行</a></td>
+    					<td class="text-right" style="padding-right:15px"><a href="javascript:runShopCrawler()">运行</a></td>
     				</tr>
     				<tr>
     					<td>岑氏</td>
@@ -84,10 +96,7 @@
 	    	<div class="panel panel-success">
 	    		<div class="panel-heading text-center">运行中的爬虫</div>
 	    		<ul class="list-group" id="runningCrawlerList">
-	    			<!-- <li class="list-group-item">
-	    				<span class="badge">14</span>
-	    				品牌爬虫
-	    			</li> -->
+	    			
 	    		</ul>
 	    	</div>
 	    </div>
@@ -95,7 +104,7 @@
 	    	<div class="panel panel-default" style="overflow:auto; height:450px">
 	    		<div class="panel-heading text-center">日志</div>
 	    		<table class="table table-hover table-striped table-condensed" id="logs">
-
+	    			
 	    		</table>
 	    	</div>
 	    </div>
