@@ -9,9 +9,11 @@ module.exports = function(io){
 	var brandCrawler = require('../crawlers/basic/brandCrawler');
 	var itemMetaCrawler = require('../crawlers/basic/itemMetaCrawler');
 	var skuMetaCrawler = require('../crawlers/basic/skuMetaCrawler');
+	var skuCrawler = require('../crawlers/basic/skuCrawler');
 
 	var Brand = require('../models/brand');
 	var ItemMeta = require('../models/itemMeta');
+	var SkuMeta = require('../models/skuMeta');
 
 	var async = require('async');
 	var mom = require('moment');
@@ -65,7 +67,7 @@ module.exports = function(io){
 											console.log(err);
 											callback();
 										}else if(results){
-											async.eachSeries(results, function(result, callback){
+											async.each(results, function(result, callback){
 												skuMetaCrawler.start(result.tid, result.brandTid, callback);
 											}, function(err){
 												if(err){
@@ -81,7 +83,25 @@ module.exports = function(io){
 						break;
 
 						case 'sku':
-
+							SkuMeta.getAllCount(function(err, c){
+								async.timesSeries(c/100 + 1, function(i, callback){
+									SkuMeta.getTop100DescBySkuUpdated(function(err, results){
+										if(err){
+											console.log(err);
+											callback();
+										}else if(results){
+											async.each(results, function(result, callback){
+												skuCrawler.start(result, callback);
+											}, function(err){
+												if(err){
+													console.log(err);
+												}
+												callback();
+											});
+										}
+									});
+								});
+							});
 						break;
 
 						case 'trade':
