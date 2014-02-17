@@ -1,4 +1,4 @@
-exports.start = function(tid, brandTid, outercallback){
+exports.start = function(itemMetaTid, brandTid, outercallback){
 	var settings = require('../crawler_settings');
 	var webdriver = require('selenium-webdriver');
 	var async = require('async');
@@ -12,7 +12,7 @@ exports.start = function(tid, brandTid, outercallback){
 
 	async.series([
 		function(callback){
-			driver.get(settings.itemMetaDetailPageUrl + "&spuid=" + tid).then(callback);
+			driver.get(settings.itemMetaDetailPageUrl + "&spuid=" + itemMetaTid).then(callback);
 		},
 
 		//update the category info of the Item Meta
@@ -54,7 +54,7 @@ exports.start = function(tid, brandTid, outercallback){
 							});
 						});
 					}).then(function(){
-						ItemMeta.saveCateInfo(tid, tmpItemMeta.cate1, tmpItemMeta.cate2, null, tmpItemMeta.cate1Id, tmpItemMeta.cate2Id, null, function(err, result){
+						ItemMeta.saveCateInfo(itemMetaTid, tmpItemMeta.cate1, tmpItemMeta.cate2, null, tmpItemMeta.cate1Id, tmpItemMeta.cate2Id, null, function(err, result){
 							if(err){
 								console.log(err);
 							}
@@ -75,7 +75,7 @@ exports.start = function(tid, brandTid, outercallback){
 				specDiv.findElements({tagName : 'span'}).then(function(specSpans){
 					async.eachSeries(specSpans, function(specSpan, callback){
 						var tmpSku = {
-							itemMetaTid : tid, 
+							itemMetaTid : itemMetaTid, 
 							brandTid : brandTid
 						};
 						specSpan.getAttribute('data-price').then(function(strPrice){
@@ -119,7 +119,7 @@ exports.start = function(tid, brandTid, outercallback){
 
 		function(callback){
 			ItemMeta.updateUpdatedTime({
-				tid : tid,
+				tid : itemMetaTid,
 				target : 'skuMeta',
 				value : new Date()
 			}, function(err, result){

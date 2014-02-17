@@ -89,3 +89,35 @@ SkuMeta.getCountByBrand = function(brandTid, callback){
 		callback(null, count);
 	});
 };
+
+SkuMeta.getTop100DescBySkuUpdated = function(callback) {
+	conn.collection('skuMetas').find({}, {limit : 100, sort : [['skuUpdated', 1]]}).toArray(function(err, results){
+		if(err){
+			callback(err);
+		}
+		else{
+			callback(null, results);
+		}
+	});
+};
+
+SkuMeta.updateUpdatedTime = function(obj, callback){
+	if(obj.target == "sku"){
+		conn.collection('skuMetas').update({tid : obj.tid}, {$set : {skuUpdated : obj.value}}, function(err, result){
+			if(err){
+				return callback(err);
+			}
+
+			callback(null, result);
+		});
+	}
+	else if(obj.target == "skuMetaDetail"){
+		conn.collection('skuMetas').update({tid : obj.tid}, {$set : {skuMetaDetailUpdated : obj.value}}, function(err, result){
+			if(err){
+				return callback(err);
+			}
+
+			callback(null, result);
+		});
+	}
+};

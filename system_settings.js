@@ -3,7 +3,7 @@
 */
 
 var server = "localhost";
-var port = "3001"
+var port = "3000"
 
 exports.server = server;
 exports.port = port;
