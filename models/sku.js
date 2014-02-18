@@ -4,6 +4,10 @@ function SKU(sku){
 	this.tid = sku.tid;
 	this.title = sku.title;
 	this.skuMetaTid = sku.skuMetaTid;
+	this.sellerId = sku.sellerId;
+	this.sellerName = sku.sellerName;
+	this.shopId = sku.shopId;
+	this.url = sku.url;
 	this.tradeUpdated = sku.tradeUpdated;
 	this.skuDetailUpdated = sku.skuDetailUpdated;
 	this.shopUpdated = sku.shopUpdated;
@@ -19,6 +23,10 @@ SKU.prototype.save = function(callback){
 		tid : this.tid,
 		title : this.title,
 		skuMetaTid : this.skuMetaTid,
+		sellerId : this.sellerId,
+		sellerName : this.sellerName,
+		url : this.url,
+		shopId : this.shopId,
 		tradeUpdated : new Date(),
 		skuDetailUpdated : new Date(),
 		shopUpdated : new Date(),

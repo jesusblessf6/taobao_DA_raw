@@ -1,5 +1,6 @@
 exports.start = function(skuMeta, outercallback){
 	
+	var urlParser = require('url');
 	var settings = require('../crawler_settings');
 	var webdriver = require('selenium-webdriver');
 	var async = require('async');
@@ -31,7 +32,7 @@ exports.start = function(skuMeta, outercallback){
 								callback();
 							});
 						}, function(err){
-							if(err){
+							if(err){http://spu.taobao.com/spu/detail.htm?spm=5133.117242.a2107.173.Doe1PC&cat=1801,50010788,50071436&spuid=49033934&spec=75475851&auction_page=2
 								console.log(err);
 							}
 							callback();
@@ -49,8 +50,62 @@ exports.start = function(skuMeta, outercallback){
 
 		//open each page to get the sku data
 		function(callback){
+			var pageIndexes = [];
+			for(var i = 1; i <= pageCount; i ++){
+				pageIndexes.push(i);
+			}
 
-			callback();
+			async.eachSeries(pageIndexes, function(index, callback){
+				driver.get(settings.itemMetaDetailPageUrl + "&spuid=" + skuMeta.itemMetaTid + "&spec=" + skuMeta.tid + "&auction_page=" + index).then(function(){
+					driver.findElements({className : "list-item"}).then(function(list){
+						async.each(list, function(item, callback){
+							
+							var tmpSku = {};
+							async.series([
+
+								//sellerId
+								function(callback){
+									item.getAttribute("sellerid").then(function(sid){
+										tmpSku.sellerId = sid;
+									}).then(callback);	
+								},
+
+								//tid and url
+								function(callback){
+									item.findElement({className : "img"}).then(function(img){
+										img.findElement({tagName : "a"}).then(function(a){
+											a.getAttribute("href").then(function(link){
+												tmpSku.url = link;
+												var parsedUrl = urlParser.parse(link, true);
+												console.log(parsedUrl);
+											});
+										});
+									}).then(callback);
+								}
+
+							], function(err){
+								if(err){
+									console.log(err);
+								}
+								callback();
+							});
+							
+						}, function(err){
+							if(err){
+								console.log(err);
+							}
+							callback();
+						});
+					});
+				});
+
+			}, function(err){
+				if(err){
+					console.log(err);
+				}
+				callback();
+			});
+			
 		},
 
 		function(callback){
