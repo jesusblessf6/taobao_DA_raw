@@ -24,7 +24,11 @@ exports.start = function(skuMeta, outercallback){
 					driver.findElements({className : "vm-page-text"}).then(function(elements){
 						async.each(elements, function(element, callback){
 							element.getTetx().then(function(text){
-
+								if(text.indexOf("共") >= 0 && text.indexOf("页") >= 0){
+									text = text.replace("共", "").replace("页", "");
+									pageCount = Number(text);
+								}
+								callback();
 							});
 						}, function(err){
 							if(err){
@@ -41,6 +45,12 @@ exports.start = function(skuMeta, outercallback){
 					outercallback();
 				}
 			}).then(callback);
+		},
+
+		//open each page to get the sku data
+		function(callback){
+
+			callback();
 		},
 
 		function(callback){
