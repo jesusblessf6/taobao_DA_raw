@@ -43,7 +43,7 @@ SKU.prototype.save = function(callback){
 				if(err){
 					return callback(err);
 				}else{
-					callback(null, result);
+					callback(null, r);
 				}
 			})
 		}else{
@@ -52,7 +52,7 @@ SKU.prototype.save = function(callback){
 				if(err){
 					return callback(err);
 				}else{
-					callback(null, result);
+					callback(null, r);
 				}
 			})
 		}

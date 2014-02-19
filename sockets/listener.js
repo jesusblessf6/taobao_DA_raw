@@ -67,7 +67,7 @@ module.exports = function(io){
 											console.log(err);
 											callback();
 										}else if(results){
-											async.each(results, function(result, callback){
+											async.eachSeries(results, function(result, callback){
 												skuMetaCrawler.start(result.tid, result.brandTid, callback);
 											}, function(err){
 												if(err){
@@ -90,7 +90,7 @@ module.exports = function(io){
 											console.log(err);
 											callback();
 										}else if(results){
-											async.each(results, function(result, callback){
+											async.eachSeries(results, function(result, callback){
 												skuCrawler.start(result, callback);
 											}, function(err){
 												if(err){
@@ -100,7 +100,7 @@ module.exports = function(io){
 											});
 										}
 									});
-								});
+								}, callback);
 							});
 						break;
 

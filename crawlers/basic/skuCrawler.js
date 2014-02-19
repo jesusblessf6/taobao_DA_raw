@@ -23,8 +23,8 @@ exports.start = function(skuMeta, outercallback){
 				if(existed){
 					//normal page.
 					driver.findElements({className : "vm-page-text"}).then(function(elements){
-						async.each(elements, function(element, callback){
-							element.getTetx().then(function(text){
+						async.eachSeries(elements, function(element, callback){
+							element.getText().then(function(text){
 								if(text.indexOf("共") >= 0 && text.indexOf("页") >= 0){
 									text = text.replace("共", "").replace("页", "");
 									pageCount = Number(text);
@@ -32,7 +32,7 @@ exports.start = function(skuMeta, outercallback){
 								callback();
 							});
 						}, function(err){
-							if(err){http://spu.taobao.com/spu/detail.htm?spm=5133.117242.a2107.173.Doe1PC&cat=1801,50010788,50071436&spuid=49033934&spec=75475851&auction_page=2
+							if(err){
 								console.log(err);
 							}
 							callback();
@@ -58,15 +58,19 @@ exports.start = function(skuMeta, outercallback){
 			async.eachSeries(pageIndexes, function(index, callback){
 				driver.get(settings.itemMetaDetailPageUrl + "&spuid=" + skuMeta.itemMetaTid + "&spec=" + skuMeta.tid + "&auction_page=" + index).then(function(){
 					driver.findElements({className : "list-item"}).then(function(list){
-						async.each(list, function(item, callback){
+						console.log(list);
+						async.eachSeries(list, function(item, callback){
 							
-							var tmpSku = {};
+							var tmpSku = {
+								skuMetaTid : skuMeta.tid
+							};
 							async.series([
 
 								//sellerId
 								function(callback){
 									item.getAttribute("sellerid").then(function(sid){
 										tmpSku.sellerId = sid;
+										console.log("sellerId : " + sid);
 									}).then(callback);	
 								},
 
@@ -77,10 +81,57 @@ exports.start = function(skuMeta, outercallback){
 											a.getAttribute("href").then(function(link){
 												tmpSku.url = link;
 												var parsedUrl = urlParser.parse(link, true);
-												console.log(parsedUrl);
+												
+												tmpSku.tid = parsedUrl.query.id;
+												console.log("url : " + link);
+												console.log("tid : " + parsedUrl.query.id);
 											});
 										});
 									}).then(callback);
+								},
+
+								function(callback){
+									item.findElement({className : "s-title"}).then(function(t){
+										//get title
+										t.findElement({tagName : "h3"}).then(function(h){
+											h.getText().then(function(text){
+												tmpSku.title = text;
+												console.log("title : " + text);
+											});
+										});
+										//get seller name
+										// t.findElement({className : "ww-light"}).then(function(tt){
+										// 	tt.getAttribute("data-nick").then(function(nick){
+										// 		tmpSku.sellerName = nick;
+										// 		console.log("sellerName : "+nick);
+										// 	});
+										// });
+									}).then(callback);
+								},
+
+								//save the sku
+								function(callback){
+									var sku = new Sku(tmpSku);
+									sku.save(function(err, result){
+										if(err){
+											console.log(err);					
+										}
+										callback();
+									});
+								},
+
+								//update the updated time of sku meta
+								function(callback){
+									SkuMeta.updateUpdatedTime({
+										target : "sku",
+										tid : tmpSku.skuMetaTid,
+										value : new Date()
+									}, function(err, result){
+										if(err){
+											console.log(err);
+										}
+										callback();
+									});
 								}
 
 							], function(err){
