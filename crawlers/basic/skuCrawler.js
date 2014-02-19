@@ -50,15 +50,15 @@ exports.start = function(skuMeta, outercallback){
 
 		//open each page to get the sku data
 		function(callback){
-			var pageIndexes = [];
-			for(var i = 1; i <= pageCount; i ++){
-				pageIndexes.push(i);
-			}
+			// var pageIndexes = [];
+			// for(var i = 1; i <= pageCount; i ++){
+			// 	pageIndexes.push(i);
+			// }
 
-			async.eachSeries(pageIndexes, function(index, callback){
+			async.timesSeries(pageCount, function(index, callback){
 				driver.get(settings.itemMetaDetailPageUrl + "&spuid=" + skuMeta.itemMetaTid + "&spec=" + skuMeta.tid + "&auction_page=" + index).then(function(){
 					driver.findElements({className : "list-item"}).then(function(list){
-						console.log(list);
+						//console.log(list);
 						async.eachSeries(list, function(item, callback){
 							
 							var tmpSku = {
@@ -112,6 +112,11 @@ exports.start = function(skuMeta, outercallback){
 								//save the sku
 								function(callback){
 									var sku = new Sku(tmpSku);
+									sku.tradeUpdated = new Date();
+									sku.skuDetailUpdated = new Date();
+									sku.shopUpdated = new Date();
+									sku.otherUpdated = new Date();
+									
 									sku.save(function(err, result){
 										if(err){
 											console.log(err);					

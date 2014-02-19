@@ -14,6 +14,7 @@ module.exports = function(io){
 	var Brand = require('../models/brand');
 	var ItemMeta = require('../models/itemMeta');
 	var SkuMeta = require('../models/skuMeta');
+	var Sku = require('../models/sku');
 
 	var async = require('async');
 	var mom = require('moment');
@@ -77,7 +78,11 @@ module.exports = function(io){
 											});
 										}
 									});
-								}, callback);
+								}, function(err, results){
+									if(err){
+										console.log(err);
+									}
+								});
 							});
 							
 						break;
@@ -100,12 +105,18 @@ module.exports = function(io){
 											});
 										}
 									});
-								}, callback);
+								}, function(err, results){
+									if(err){
+										console.log(err);
+									}
+								});
 							});
 						break;
 
 						case 'trade':
-
+							Sku.getAllCount(function(err, c){
+								async.timesSeries(c/100 + 1, function(i, callback){}, callback);
+							});
 						break;
 
 						case 'shop':

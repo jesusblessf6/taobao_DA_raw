@@ -58,3 +58,21 @@ SKU.prototype.save = function(callback){
 		}
 	});
 };
+
+SKU.getAllCount = function(callback){
+	conn.collection('skus').count(function(err, c){
+		if(err){
+			callback(err);
+		}
+		callback(null, c);
+	});
+};
+
+SKU.getTop100DescByTradeUpdated = function(callback){
+	conn.collection('skus').find({}, {limit : 100, sort : [['tradeUpdated', 1]]}).toArray(function(err, results){
+		if(err){
+			callback(err);
+		}
+		callback(null, results);
+	});
+}
