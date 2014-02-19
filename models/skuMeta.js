@@ -103,7 +103,7 @@ SkuMeta.getTop100DescBySkuUpdated = function(callback) {
 
 SkuMeta.updateUpdatedTime = function(obj, callback){
 	if(obj.target == "sku"){
-		conn.collection('skuMetas').update({tid : obj.tid}, {$set : {skuUpdated : obj.value}}, function(err, result){
+		conn.collection('skuMetas').update({tid : obj.tid, itemMetaTid : obj.itemMetaTid}, {$set : {skuUpdated : obj.value}}, function(err, result){
 			if(err){
 				return callback(err);
 			}
@@ -112,7 +112,7 @@ SkuMeta.updateUpdatedTime = function(obj, callback){
 		});
 	}
 	else if(obj.target == "skuMetaDetail"){
-		conn.collection('skuMetas').update({tid : obj.tid}, {$set : {skuMetaDetailUpdated : obj.value}}, function(err, result){
+		conn.collection('skuMetas').update({tid : obj.tid, itemMetaTid : obj.itemMetaTid}, {$set : {skuMetaDetailUpdated : obj.value}}, function(err, result){
 			if(err){
 				return callback(err);
 			}

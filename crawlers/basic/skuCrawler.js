@@ -62,7 +62,8 @@ exports.start = function(skuMeta, outercallback){
 						async.eachSeries(list, function(item, callback){
 							
 							var tmpSku = {
-								skuMetaTid : skuMeta.tid
+								skuMetaTid : skuMeta.tid,
+								itemMetaTid : skuMeta.itemMetaTid
 							};
 							async.series([
 
@@ -130,6 +131,7 @@ exports.start = function(skuMeta, outercallback){
 									SkuMeta.updateUpdatedTime({
 										target : "sku",
 										tid : tmpSku.skuMetaTid,
+										itemMetaTid : tmpSku.itemMetaTid,
 										value : new Date()
 									}, function(err, result){
 										if(err){

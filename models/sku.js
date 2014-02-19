@@ -4,6 +4,7 @@ function SKU(sku){
 	this.tid = sku.tid;
 	this.title = sku.title;
 	this.skuMetaTid = sku.skuMetaTid;
+	this.itemMetaTid = sku.itemMetaTid;
 	this.sellerId = sku.sellerId;
 	this.sellerName = sku.sellerName;
 	this.shopId = sku.shopId;
@@ -25,6 +26,7 @@ SKU.prototype.save = function(callback){
 		skuMetaTid : this.skuMetaTid,
 		sellerId : this.sellerId,
 		sellerName : this.sellerName,
+		itemMetaTid : this.itemMetaTid,
 		url : this.url,
 		shopId : this.shopId,
 		tradeUpdated : new Date(),
@@ -35,11 +37,11 @@ SKU.prototype.save = function(callback){
 
 	var skuCol = conn.collection('skus');
 
-	skuCol.count({tid : sku.tid, skuMetaTid : sku.skuMetaTid}, function(err, c){
+	skuCol.count({tid : sku.tid}, function(err, c){
 
 		if(c > 0 ){
 			//existed. update it.
-			skuCol.update({tid: sku.tid, skuMetaTid : sku.skuMetaTid}, {$set: {title : sku.title}}, function(err, r){
+			skuCol.update({tid: sku.tid}, {$set: {title : sku.title, itemMetaTid : sku.itemMetaTid}}, function(err, r){
 				if(err){
 					return callback(err);
 				}else{
