@@ -10,7 +10,7 @@ module.exports = function(io){
 	var itemMetaCrawler = require('../crawlers/basic/itemMetaCrawler');
 	var skuMetaCrawler = require('../crawlers/basic/skuMetaCrawler');
 	var skuCrawler = require('../crawlers/basic/skuCrawler');
-	var tradeCrawler = requlre('../crawlers/basic/tradeCrawler');
+	var tradeCrawler = require('../crawlers/basic/tradeCrawler');
 
 	var Brand = require('../models/brand');
 	var ItemMeta = require('../models/itemMeta');
