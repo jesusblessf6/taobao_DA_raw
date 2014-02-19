@@ -43,7 +43,18 @@ exports.start = function(skuMeta, outercallback){
 					driver.close();
 					driver.quit();
 					driver = null;
-					outercallback();
+					SkuMeta.updateUpdatedTime({
+						target : "sku",
+						tid : skuMeta.tid,
+						itemMetaTid : skuMeta.itemMetaTid,
+						value : new Date()
+					}, function(err, result){
+						if(err){
+							console.log(err);
+						}
+						outercallback();
+					});
+					
 				}
 			}).then(callback);
 		},

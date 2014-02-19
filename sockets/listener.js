@@ -10,6 +10,7 @@ module.exports = function(io){
 	var itemMetaCrawler = require('../crawlers/basic/itemMetaCrawler');
 	var skuMetaCrawler = require('../crawlers/basic/skuMetaCrawler');
 	var skuCrawler = require('../crawlers/basic/skuCrawler');
+	var tradeCrawler = requlre('../crawlers/basic/tradeCrawler');
 
 	var Brand = require('../models/brand');
 	var ItemMeta = require('../models/itemMeta');
@@ -115,7 +116,28 @@ module.exports = function(io){
 
 						case 'trade':
 							Sku.getAllCount(function(err, c){
-								async.timesSeries(c/100 + 1, function(i, callback){}, callback);
+								async.timesSeries(c/100 + 1, function(i, callback){
+									Sku.getTop100DescByTradeUpdated(function(err, results){
+										if(err){
+											console.log(err);
+											callback();
+										}
+										else if(results){	
+											async.eachSeries(results, function(sku, callback){
+												tradeCrawler.start(sku, callback);
+											}, function(err){
+												if(err){
+													console.log(err);
+												}
+												callback();
+											});
+										}
+									});
+								}, function(err, results){
+									if(err){
+										console.log(err);
+									}
+								});
 							});
 						break;
 

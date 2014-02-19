@@ -77,4 +77,4 @@ SKU.getTop100DescByTradeUpdated = function(callback){
 		}
 		callback(null, results);
 	});
-}
+};
